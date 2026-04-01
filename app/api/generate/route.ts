@@ -10,20 +10,19 @@ export async function POST(req: Request) {
     }
 
     // Using the stable v1 endpoint and the explicit model name
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    // Try the "latest" alias which auto-resolves to the current working version
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ 
           parts: [{ 
-            text: `You are an expert Prompt Engineer. Transform the following user request into a highly detailed, professional prompt that follows the "Role, Context, Task, Constraints, Output" framework. 
-            
-            User Request: ${userRequest}` 
+            text: `Structure this into a pro AI prompt with Role, Task, and Constraints: ${userRequest}` 
           }] 
         }]
       })
     });
-
+    
     const data = await response.json();
 
     if (data.error) {
